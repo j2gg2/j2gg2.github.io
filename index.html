@@ -1211,6 +1211,63 @@ document.querySelectorAll('.sheet-tab').forEach(tab => {
 const savedSheet = loadPrefs().sheet || 'particles';
 const savedTab = document.querySelector('.sheet-tab[data-sheet="' + savedSheet + '"]');
 if (savedTab) savedTab.click();
+  /* ── DUOLINGO UNITS ───────────────────────────────────────────── */
+const duoUnits = [
+  { num:1,  title:'Hiragana & Katakana',       topics:'あいうえお, basic kana, greetings',                                      status:'done' },
+  { num:2,  title:'Greetings & Introductions',  topics:'こんにちは, はじめまして, naming yourself, polite speech',               status:'done' },
+  { num:3,  title:'Travel & Directions',        topics:'どこ, 〜に行く, transportation, station',                               status:'done' },
+  { num:4,  title:'Food & Restaurants',         topics:'〜をください, いくら, numbers, ordering',                               status:'done' },
+  { num:5,  title:'Time & Daily Routine',       topics:'何時, 〜に起きる, AM/PM, frequency adverbs',                            status:'done' },
+  { num:6,  title:'Family & Relationships',     topics:'family vocab, possession の, age, introducing others',                   status:'done' },
+  { num:7,  title:'Shopping & Numbers',         topics:'大きい/小さい, colors, numbers 1–10000, this/that/that over there',       status:'done' },
+  { num:8,  title:'Nature & Weather',           topics:'天気, 季節, adjective conjugation い/な',                                status:'done' },
+  { num:9,  title:'Hobbies & Activities',       topics:'〜が好き, 〜たい, te-form, can/cannot できる',                            status:'done' },
+  { num:10, title:'Work & School',              topics:'職業, subjects, 〜ている progressive, places',                          status:'done' },
+  { num:11, title:'Health & Body',              topics:'体の部位, 〜が痛い, doctor visits, て-form requests',                   status:'done' },
+  { num:12, title:'Town & Community',           topics:'〜がある, location words, maps, ください',                              status:'done' },
+  { num:13, title:'School & Education',         topics:'Talk about education, 〜という, school subjects, describing learning',  status:'inprogress' },
+];
+
+const duoGrid = document.getElementById('duo-grid');
+duoUnits.forEach(u => {
+  const el = document.createElement('div');
+  el.className = 'duo-unit';
+  el.innerHTML = `
+    <div class="duo-unit-header">
+      <div class="duo-unit-num ${u.status === 'done' ? 'done' : ''}">${u.num}</div>
+      <h4>${u.title}</h4>
+    </div>
+    <p class="duo-topics">${u.topics}</p>
+    <span class="duo-status ${u.status === 'done' ? 'done' : 'prog'}">
+      ${u.status === 'done' ? '✓ Completed' : '▶ In Progress'}
+    </span>`;
+  duoGrid.appendChild(el);
+});
+
+/* ── RESOURCES ────────────────────────────────────────────────── */
+const resourceGroups = [
+  {
+    title: '📖 Dictionaries',
+    items: [
+      { icon:'🔍', name:'Jisho',           desc:'The best free Japanese–English dictionary. Stroke order, JLPT level, kanji breakdown.',   url:'https://jisho.org' },
+      { icon:'📱', name:'Takoboto',        desc:'Offline-capable dictionary app. Great for mobile. Includes pitch accent info.',            url:'https://takoboto.jp' },
+      { icon:'漢', name:'Jotoba',          desc:'Fast open-source dictionary with good example sentences and furigana.',                    url:'https://jotoba.de' },
+    ]
+  },
+  {
+    title: '⛩️ SRS & Kanji',
+    items: [
+      { icon:'🏮', name:'WaniKani',        desc:'Your kanji SRS. Radical → Kanji → Vocab. Live data connected via API above.',            url:'https://wanikani.com' },
+      { icon:'📲', name:'Kakehashi',       desc:'The WaniKani companion app you use on mobile.',                                           url:'https://kakehashi.app' },
+      { icon:'🧠', name:'Bunpro',          desc:'Grammar SRS. Great companion to Minna no Nihongo. Covers N5–N1.',                        url:'https://bunpro.jp' },
+      { icon:'🃏', name:'Anki',            desc:'Create your own decks for class vocab and custom cards. Free and open source.',           url:'https://apps.ankiweb.net' },
+    ]
+  },
+  {
+    title: '🎌 Grammar & Study',
+    items: [
+      { icon:'📗', name:"Tae Kim's Guide", desc:'Free, complete grammar guide from scratch. Goes well alongside Minna no Nihongo.',        url:'https://guidetojapanese.org/learn/' },
+      { icon:'🔤', name:'JPDB',            desc:'Vocabulary frequency lists. Great for deciding 
 lucide.createIcons();
 </script>
 </body>
