@@ -1,1 +1,1303 @@
-.
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jan's Japanese Hub 🇯🇵</title>
+  <meta name="description" content="Jan's personal Japanese learning progress dashboard — WaniKani, Duolingo, Minna no Nihongo, cheat sheets and resources." />
+
+  <!-- Fonts -->
+  <link href="https://api.fontshare.com/v2/css?f[]=satoshi@300,400,500,700&f[]=cabinet-grotesk@700,800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <!-- Icons -->
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.0/dist/chart.umd.min.js"></script>
+  <style>
+    /* ── TOKENS ─────────────────────────────────────────────── */
+    :root, [data-theme="light"] {
+      --color-bg:              #f7f6f2;
+      --color-surface:         #f9f8f5;
+      --color-surface-2:       #fbfbf9;
+      --color-surface-offset:  #f0ede8;
+      --color-border:          #d4d1ca;
+      --color-divider:         #dcd9d5;
+      --color-text:            #28251d;
+      --color-text-muted:      #6b6a65;
+      --color-text-faint:      #b0afa9;
+      --color-primary:         #c0392b;   /* Japan red */
+      --color-primary-hover:   #96281b;
+      --color-primary-light:   #fdf0ee;
+      --color-accent:          #e74c3c;
+      --color-gold:            #d4a017;
+      --color-gold-light:      #fdf8ec;
+      --color-success:         #27ae60;
+      --color-success-light:   #edfaf3;
+      --font-display:          'Cabinet Grotesk', 'Georgia', sans-serif;
+      --font-body:             'Satoshi', 'Inter', sans-serif;
+      --font-jp:               'Noto Sans JP', sans-serif;
+      --text-xs:   clamp(0.75rem,  0.7rem  + 0.25vw, 0.875rem);
+      --text-sm:   clamp(0.875rem, 0.8rem  + 0.35vw, 1rem);
+      --text-base: clamp(1rem,     0.95rem + 0.25vw, 1.125rem);
+      --text-lg:   clamp(1.125rem, 1rem    + 0.75vw, 1.5rem);
+      --text-xl:   clamp(1.5rem,   1.2rem  + 1.25vw, 2.25rem);
+      --text-2xl:  clamp(2rem,     1.2rem  + 2.5vw,  3.5rem);
+      --text-hero: clamp(3rem,     0.5rem  + 7vw,    7rem);
+      --space-1: .25rem; --space-2: .5rem; --space-3: .75rem; --space-4: 1rem;
+      --space-5: 1.25rem; --space-6: 1.5rem; --space-8: 2rem; --space-10: 2.5rem;
+      --space-12: 3rem; --space-16: 4rem; --space-20: 5rem; --space-24: 6rem;
+      --radius-sm: 0.375rem; --radius-md: 0.5rem; --radius-lg: 0.75rem;
+      --radius-xl: 1rem; --radius-full: 9999px;
+      --shadow-sm: 0 1px 3px oklch(0.2 0.02 30 / 0.07);
+      --shadow-md: 0 4px 14px oklch(0.2 0.02 30 / 0.09);
+      --shadow-lg: 0 12px 32px oklch(0.2 0.02 30 / 0.13);
+      --transition: 180ms cubic-bezier(0.16, 1, 0.3, 1);
+      --content-default: 960px;
+      --content-wide: 1200px;
+    }
+
+    [data-theme="dark"] {
+      --color-bg:              #131211;
+      --color-surface:         #1a1917;
+      --color-surface-2:       #201f1d;
+      --color-surface-offset:  #252321;
+      --color-border:          #353330;
+      --color-divider:         #2a2826;
+      --color-text:             #d8d6d2;
+      --color-text-muted:      #858380;
+      --color-text-faint:      #55524e;
+      --color-primary:         #e05545;
+      --color-primary-hover:   #f06a5a;
+      --color-primary-light:   #2a1a18;
+      --color-accent:          #ff6b5b;
+      --color-gold:            #e8b84b;
+      --color-gold-light:      #2a2215;
+      --color-success:         #4eca7f;
+      --color-success-light:   #152a1f;
+      --shadow-sm: 0 1px 3px oklch(0 0 0 / 0.25);
+      --shadow-md: 0 4px 14px oklch(0 0 0 / 0.35);
+      --shadow-lg: 0 12px 32px oklch(0 0 0 / 0.45);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme]) {
+        --color-bg: #131211; --color-surface: #1a1917; --color-surface-2: #201f1d;
+        --color-surface-offset: #252321; --color-border: #353330; --color-divider: #2a2826;
+        --color-text: #d8d6d2; --color-text-muted: #858380; --color-text-faint: #55524e;
+        --color-primary: #e05545; --color-primary-hover: #f06a5a; --color-primary-light: #2a1a18;
+        --color-accent: #ff6b5b; --color-gold: #e8b84b; --color-gold-light: #2a2215;
+        --color-success: #4eca7f; --color-success-light: #152a1f;
+      }
+    }
+
+    /* ── RESET ──────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; scroll-padding-top: 80px; -webkit-font-smoothing: antialiased; }
+    body { min-height: 100dvh; font-family: var(--font-body); font-size: var(--text-base);
+           color: var(--color-text); background: var(--color-bg); line-height: 1.6; }
+    img, svg { display: block; max-width: 100%; }
+    button { cursor: pointer; background: none; border: none; font: inherit; color: inherit; }
+    a { color: inherit; text-decoration: none; }
+    ul, ol { list-style: none; }
+    :focus-visible { outline: 2px solid var(--color-primary); outline-offset: 3px; border-radius: var(--radius-sm); }
+    ::selection { background: oklch(from var(--color-primary) l c h / 0.2); }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+    }
+
+    /* ── NAV ────────────────────────────────────────────────── */
+    .nav {
+      position: sticky; top: 0; z-index: 100;
+      background: color-mix(in oklch, var(--color-bg) 85%, transparent);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--color-divider);
+      padding: 0 var(--space-6);
+    }
+    .nav-inner {
+      max-width: var(--content-wide);
+      margin-inline: auto;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 60px; gap: var(--space-4);
+    }
+    .nav-logo {
+      display: flex; align-items: center; gap: var(--space-2);
+      font-family: var(--font-display); font-weight: 800;
+      font-size: var(--text-lg); color: var(--color-text);
+    }
+    .nav-logo svg { color: var(--color-primary); }
+    .nav-links { display: flex; align-items: center; gap: var(--space-1); }
+    .nav-links a {
+      font-size: var(--text-sm); font-weight: 500; color: var(--color-text-muted);
+      padding: var(--space-2) var(--space-3); border-radius: var(--radius-md);
+      transition: color var(--transition), background var(--transition);
+    }
+    .nav-links a:hover { color: var(--color-text); background: var(--color-surface-offset); }
+    .nav-links a.active { color: var(--color-primary); background: var(--color-primary-light); }
+    .nav-right { display: flex; align-items: center; gap: var(--space-2); }
+    .theme-btn {
+      width: 36px; height: 36px; border-radius: var(--radius-md);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--color-text-muted); transition: color var(--transition), background var(--transition);
+    }
+    .theme-btn:hover { color: var(--color-text); background: var(--color-surface-offset); }
+    .hamburger { display: none; padding: var(--space-2); color: var(--color-text-muted); border-radius: var(--radius-md); }
+    .hamburger:hover { background: var(--color-surface-offset); }
+
+    /* ── HERO ───────────────────────────────────────────────── */
+    .hero {
+      background: var(--color-surface);
+      border-bottom: 1px solid var(--color-divider);
+      padding: clamp(var(--space-12), 8vw, var(--space-24)) var(--space-6);
+      text-align: center;
+      position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content: '日本語';
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+      font-family: var(--font-jp); font-size: clamp(6rem, 20vw, 18rem);
+      font-weight: 700; color: var(--color-text); opacity: 0.03;
+      pointer-events: none; user-select: none; white-space: nowrap;
+    }
+    .hero-inner { max-width: var(--content-default); margin-inline: auto; position: relative; }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: var(--space-2);
+      background: var(--color-primary-light); color: var(--color-primary);
+      font-size: var(--text-xs); font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase;
+      padding: var(--space-1) var(--space-3); border-radius: var(--radius-full);
+      border: 1px solid oklch(from var(--color-primary) l c h / 0.2);
+      margin-bottom: var(--space-4);
+    }
+    .hero h1 {
+      font-family: var(--font-display); font-size: var(--text-2xl); font-weight: 800;
+      line-height: 1.1; color: var(--color-text); margin-bottom: var(--space-4);
+    }
+    .hero h1 span { color: var(--color-primary); }
+    .hero-sub {
+      font-size: var(--text-base); color: var(--color-text-muted);
+      max-width: 52ch; margin-inline: auto; margin-bottom: var(--space-8);
+    }
+
+    /* ── STATS ROW ──────────────────────────────────────────── */
+    .stats-row {
+      display: flex; flex-wrap: wrap; justify-content: center;
+      gap: var(--space-3);
+    }
+    .stat-pill {
+      display: flex; align-items: center; gap: var(--space-2);
+      background: var(--color-surface-2); border: 1px solid var(--color-border);
+      border-radius: var(--radius-full);
+      padding: var(--space-2) var(--space-4);
+      box-shadow: var(--shadow-sm);
+    }
+    .stat-pill .stat-icon { font-size: 1.1em; }
+    .stat-pill .stat-val { font-weight: 700; color: var(--color-text); font-size: var(--text-sm); }
+    .stat-pill .stat-label { color: var(--color-text-muted); font-size: var(--text-xs); }
+    .stat-pill.highlight .stat-val { color: var(--color-primary); }
+    .stat-pill.gold .stat-val { color: var(--color-gold); }
+
+    /* ── SECTION CHROME ─────────────────────────────────────── */
+    .section { padding: clamp(var(--space-10), 6vw, var(--space-20)) var(--space-6); }
+    .section-alt { background: var(--color-surface); }
+    .container { max-width: var(--content-wide); margin-inline: auto; }
+    .container-md { max-width: var(--content-default); margin-inline: auto; }
+    .section-header { margin-bottom: var(--space-8); }
+    .section-label {
+      font-size: var(--text-xs); font-weight: 600; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--color-primary);
+      margin-bottom: var(--space-2);
+    }
+    .section-title {
+      font-family: var(--font-display); font-size: var(--text-xl); font-weight: 800;
+      color: var(--color-text); line-height: 1.2;
+    }
+    .section-desc { color: var(--color-text-muted); font-size: var(--text-sm); margin-top: var(--space-2); max-width: 60ch; }
+
+    /* ── PROGRESS SECTION ───────────────────────────────────── */
+    .progress-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(min(280px,100%), 1fr));
+      gap: var(--space-4);
+    }
+    .progress-card {
+      background: var(--color-surface); border: 1px solid var(--color-border);
+      border-radius: var(--radius-xl); padding: var(--space-6);
+      box-shadow: var(--shadow-sm);
+      transition: box-shadow var(--transition), transform var(--transition);
+    }
+    .progress-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+    .progress-card-header {
+      display: flex; align-items: flex-start; justify-content: space-between;
+      margin-bottom: var(--space-4);
+    }
+    .progress-card-icon {
+      width: 42px; height: 42px; border-radius: var(--radius-lg);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.25rem;
+    }
+    .progress-card-icon.red   { background: var(--color-primary-light); }
+    .progress-card-icon.gold  { background: var(--color-gold-light); }
+    .progress-card-icon.green { background: var(--color-success-light); }
+    .progress-badge {
+      font-size: var(--text-xs); font-weight: 600;
+      padding: var(--space-1) var(--space-2); border-radius: var(--radius-full);
+      background: var(--color-primary-light); color: var(--color-primary);
+    }
+    .progress-badge.gold { background: var(--color-gold-light); color: var(--color-gold); }
+    .progress-badge.green { background: var(--color-success-light); color: var(--color-success); }
+    .progress-card h3 { font-weight: 700; font-size: var(--text-base); margin-bottom: var(--space-1); }
+    .progress-card .sub { font-size: var(--text-sm); color: var(--color-text-muted); margin-bottom: var(--space-4); }
+    .progress-bar-wrap { margin-bottom: var(--space-2); }
+    .progress-bar-label { display: flex; justify-content: space-between; font-size: var(--text-xs); color: var(--color-text-muted); margin-bottom: var(--space-1); }
+    .progress-bar { height: 6px; background: var(--color-surface-offset); border-radius: var(--radius-full); overflow: hidden; }
+    .progress-bar-fill { height: 100%; border-radius: var(--radius-full); transition: width 1s cubic-bezier(0.16,1,0.3,1); }
+    .fill-red   { background: var(--color-primary); }
+    .fill-gold  { background: var(--color-gold); }
+    .fill-green { background: var(--color-success); }
+    .progress-detail { font-size: var(--text-xs); color: var(--color-text-faint); margin-top: var(--space-2); }
+
+    /* ── WANIKANI SECTION ───────────────────────────────────── */
+    .wk-filters {
+      display: flex; flex-wrap: wrap; gap: var(--space-2); margin-bottom: var(--space-6);
+    }
+    .wk-filter-btn {
+      font-size: var(--text-xs); font-weight: 600; padding: var(--space-1) var(--space-3);
+      border-radius: var(--radius-full); border: 1px solid var(--color-border);
+      background: var(--color-surface); color: var(--color-text-muted);
+      transition: all var(--transition);
+    }
+    .wk-filter-btn:hover, .wk-filter-btn.active { border-color: transparent; color: #fff; }
+    .wk-filter-btn[data-type="all"].active  { background: var(--color-text-muted); }
+    .wk-filter-btn[data-type="radical"].active { background: #00a0f1; }
+    .wk-filter-btn[data-type="kanji"].active   { background: #f100a1; }
+    .wk-filter-btn[data-type="vocab"].active   { background: #a100f1; }
+    .wk-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(min(160px,100%), 1fr));
+      gap: var(--space-3);
+    }
+    .wk-card {
+      perspective: 600px; height: 130px; cursor: pointer;
+    }
+    .wk-card-inner {
+      position: relative; width: 100%; height: 100%;
+      transform-style: preserve-3d;
+      transition: transform 0.5s cubic-bezier(0.16,1,0.3,1);
+      border-radius: var(--radius-lg);
+    }
+    .wk-card.flipped .wk-card-inner { transform: rotateY(180deg); }
+    .wk-face {
+      position: absolute; inset: 0; backface-visibility: hidden;
+      border-radius: var(--radius-lg);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      padding: var(--space-3);
+      border: 1px solid oklch(from var(--color-text) l c h / 0.1);
+    }
+    .wk-front { }
+    .wk-back  { transform: rotateY(180deg); background: var(--color-surface-2) !important; }
+    .wk-char {
+      font-family: var(--font-jp); font-size: 2.2rem; font-weight: 700;
+      color: #fff; line-height: 1; margin-bottom: var(--space-1);
+    }
+    .wk-type-label {
+      font-size: var(--text-xs); font-weight: 600; opacity: 0.75;
+      letter-spacing: 0.06em; text-transform: uppercase; color: #fff;
+    }
+    .wk-back .wk-meaning {
+      font-size: var(--text-sm); font-weight: 700; color: var(--color-text);
+      text-align: center; margin-bottom: var(--space-1);
+    }
+    .wk-back .wk-reading {
+      font-family: var(--font-jp); font-size: var(--text-base); color: var(--color-text-muted);
+      margin-bottom: var(--space-1);
+    }
+    .wk-back .wk-hint {
+      font-size: var(--text-xs); color: var(--color-text-faint); text-align: center;
+      max-width: 18ch; line-height: 1.4;
+    }
+    .wk-type-radical .wk-front { background: #00a0f1; }
+    .wk-type-kanji   .wk-front { background: #f100a1; }
+    .wk-type-vocab   .wk-front { background: #a100f1; }
+
+    /* ── CHEAT SHEETS ───────────────────────────────────────── */
+    .sheets-tabs {
+      display: flex; flex-wrap: wrap; gap: var(--space-2); margin-bottom: var(--space-6);
+      border-bottom: 1px solid var(--color-divider); padding-bottom: var(--space-3);
+    }
+    .sheet-tab {
+      font-size: var(--text-sm); font-weight: 500; padding: var(--space-2) var(--space-4);
+      border-radius: var(--radius-md); color: var(--color-text-muted);
+      transition: all var(--transition);
+    }
+    .sheet-tab:hover { color: var(--color-text); background: var(--color-surface-offset); }
+    .sheet-tab.active { background: var(--color-primary-light); color: var(--color-primary); font-weight: 600; }
+    .sheet-panel { display: none; }
+    .sheet-panel.active { display: block; }
+    .cheat-table { width: 100%; border-collapse: collapse; font-size: var(--text-sm); }
+    .cheat-table th {
+      text-align: left; padding: var(--space-2) var(--space-3);
+      font-size: var(--text-xs); font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase;
+      color: var(--color-text-muted); background: var(--color-surface-offset);
+      border-bottom: 1px solid var(--color-border);
+    }
+    .cheat-table td {
+      padding: var(--space-3); border-bottom: 1px solid var(--color-divider);
+      vertical-align: middle;
+    }
+    .cheat-table tr:last-child td { border-bottom: none; }
+    .cheat-table tr:hover td { background: var(--color-surface-offset); }
+    .jp { font-family: var(--font-jp); font-size: 1.1em; font-weight: 500; }
+    .tag {
+      display: inline-block; font-size: var(--text-xs); font-weight: 600;
+      padding: 2px var(--space-2); border-radius: var(--radius-full);
+      background: var(--color-primary-light); color: var(--color-primary);
+    }
+    .tag.blue { background: #dbeafe; color: #1d4ed8; }
+    .tag.green { background: var(--color-success-light); color: var(--color-success); }
+    [data-theme="dark"] .tag.blue { background: #1e3a5f; color: #60a5fa; }
+    .table-wrap {
+      background: var(--color-surface); border: 1px solid var(--color-border);
+      border-radius: var(--radius-xl); overflow: hidden; box-shadow: var(--shadow-sm);
+    }
+    .table-wrap + .table-wrap { margin-top: var(--space-6); }
+    .table-section-title {
+      padding: var(--space-3) var(--space-4);
+      font-weight: 700; font-size: var(--text-sm); color: var(--color-text);
+      border-bottom: 1px solid var(--color-border);
+      background: var(--color-surface-offset);
+    }
+
+    /* ── RESOURCES ──────────────────────────────────────────── */
+    .resources-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(min(220px,100%), 1fr));
+      gap: var(--space-4);
+    }
+    .resource-card {
+      background: var(--color-surface); border: 1px solid var(--color-border);
+      border-radius: var(--radius-xl); padding: var(--space-5);
+      display: flex; flex-direction: column; gap: var(--space-3);
+      box-shadow: var(--shadow-sm);
+      transition: box-shadow var(--transition), transform var(--transition), border-color var(--transition);
+      text-decoration: none; color: inherit;
+    }
+    .resource-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); border-color: var(--color-primary); }
+    .resource-icon {
+      width: 40px; height: 40px; border-radius: var(--radius-lg);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem; background: var(--color-surface-offset);
+    }
+    .resource-name { font-weight: 700; font-size: var(--text-sm); }
+    .resource-desc { font-size: var(--text-xs); color: var(--color-text-muted); line-height: 1.5; flex: 1; }
+    .resource-link {
+      font-size: var(--text-xs); font-weight: 600; color: var(--color-primary);
+      display: flex; align-items: center; gap: var(--space-1);
+    }
+    .resources-group-title {
+      font-family: var(--font-display); font-size: var(--text-lg); font-weight: 700;
+      color: var(--color-text); margin-bottom: var(--space-4); margin-top: var(--space-8);
+    }
+    .resources-group-title:first-child { margin-top: 0; }
+
+    /* ── DUOLINGO ───────────────────────────────────────────── */
+    .duo-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(min(260px,100%), 1fr));
+      gap: var(--space-4);
+    }
+    .duo-unit {
+      background: var(--color-surface); border: 1px solid var(--color-border);
+      border-radius: var(--radius-xl); padding: var(--space-5);
+      box-shadow: var(--shadow-sm);
+    }
+    .duo-unit-header { display: flex; align-items: center; gap: var(--space-3); margin-bottom: var(--space-3); }
+    .duo-unit-num {
+      width: 32px; height: 32px; border-radius: var(--radius-full);
+      background: var(--color-primary); color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-size: var(--text-xs); font-weight: 700; flex-shrink: 0;
+    }
+    .duo-unit-num.done { background: var(--color-success); }
+    .duo-unit h4 { font-size: var(--text-sm); font-weight: 700; }
+    .duo-unit .duo-topics { font-size: var(--text-xs); color: var(--color-text-muted); line-height: 1.6; }
+    .duo-status {
+      display: inline-flex; align-items: center; gap: 4px;
+      font-size: var(--text-xs); font-weight: 600;
+      padding: 2px var(--space-2); border-radius: var(--radius-full); margin-top: var(--space-2);
+    }
+    .duo-status.done  { background: var(--color-success-light); color: var(--color-success); }
+    .duo-status.prog  { background: var(--color-primary-light); color: var(--color-primary); }
+
+    /* ── FOOTER ─────────────────────────────────────────────── */
+    footer {
+      border-top: 1px solid var(--color-divider);
+      padding: var(--space-8) var(--space-6);
+      text-align: center; font-size: var(--text-xs); color: var(--color-text-faint);
+    }
+
+    /* ── MOBILE ─────────────────────────────────────────────── */
+    @media (max-width: 700px) {
+      .nav-links { display: none; }
+      .nav-links.open {
+        display: flex; flex-direction: column; position: absolute; top: 60px;
+        left: 0; right: 0; background: var(--color-surface);
+        border-bottom: 1px solid var(--color-divider);
+        padding: var(--space-4); gap: var(--space-1);
+      }
+      .hamburger { display: flex; }
+      .nav { position: relative; }
+    }
+
+    /* ── FADE-IN REVEAL ─────────────────────────────────────── */
+    .fade-in { opacity: 1; }
+    @supports (animation-timeline: scroll()) {
+      .fade-in {
+        opacity: 0;
+        animation: fade-reveal linear both;
+        animation-timeline: view();
+        animation-range: entry 0% entry 80%;
+      }
+      @keyframes fade-reveal { to { opacity: 1; } }
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- ── NAV ────────────────────────────────────────────────── -->
+<nav class="nav" role="navigation" aria-label="Main navigation">
+  <div class="nav-inner">
+    <a href="#" class="nav-logo" aria-label="Japanese Hub home">
+      <svg width="26" height="26" viewBox="0 0 26 26" fill="none" aria-hidden="true">
+        <circle cx="13" cy="13" r="12" stroke="currentColor" stroke-width="1.5"/>
+        <circle cx="13" cy="13" r="6" fill="currentColor"/>
+      </svg>
+      日本語 Hub
+    </a>
+    <div class="nav-links" id="nav-links" role="menubar">
+      <a href="#about" role="menuitem">About</a>
+      <a href="#progress" role="menuitem">Progress</a>
+      <a href="#wanikani" role="menuitem">WaniKani</a>
+      <a href="#duolingo" role="menuitem">Duolingo</a>
+      <a href="#cheatsheets" role="menuitem">Cheat Sheets</a>
+      <a href="#resources" role="menuitem">Resources</a>
+    </div>
+    <div class="nav-right">
+      <button class="theme-btn" data-theme-toggle aria-label="Switch theme">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+      <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+        <i data-lucide="menu"></i>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- ── HERO ───────────────────────────────────────────────── -->
+<header class="hero" id="home">
+  <div class="hero-inner">
+    <div class="hero-badge">🇯🇵 Japanese Learning Journey</div>
+    <h1>Jan's <span>日本語</span> Hub</h1>
+    <p class="hero-sub">Tracking every kanji, sentence, and conversation - all in one place, while sharpening my coding skills along the way.</p>
+    <div class="stats-row">
+      <div class="stat-pill highlight">
+        <span class="stat-icon">🔥</span>
+        <span class="stat-val" id="streak-counter">2,200+</span>
+        <span class="stat-label">day Duolingo streak</span>
+      </div>
+      <div class="stat-pill gold">
+        <span class="stat-icon">⛩️</span>
+        <span class="stat-val" id="wk-level-pill">…</span>
+        <span class="stat-label">WaniKani</span>
+      </div>
+      <div class="stat-pill">
+        <span class="stat-icon">📚</span>
+        <span class="stat-val">MnN 2</span>
+        <span class="stat-label">Minna no Nihongo</span>
+      </div>
+      <div class="stat-pill">
+        <span class="stat-icon">🏫</span>
+        <span class="stat-val">~2 years</span>
+        <span class="stat-label">Japanese academy</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+  <!-- ── ABOUT ──────────────────────────────────────────────────── -->
+<section class="section" id="about" style="background:var(--color-surface);border-bottom:1px solid var(--color-divider);">
+  <div class="container-md">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-12);align-items:center;">
+
+      <!-- Left: text -->
+      <div class="fade-in">
+        <div class="section-label">About</div>
+        <h2 class="section-title" style="margin-bottom:var(--space-4);">Hey, I'm Jan 👋</h2>
+        <p style="font-size:var(--text-base);color:var(--color-text-muted);margin-bottom:var(--space-4);max-width:58ch;">
+          I'm a software engineering student from <strong style="color:var(--color-text)">Barcelona's UAB</strong>, currently finishing my degree with a focus on biomedical sensor systems and hardware-software integration. Outside of the lab and lecture halls, I've been obsessively learning Japanese for years.
+        </p>
+        <p style="font-size:var(--text-base);color:var(--color-text-muted);margin-bottom:var(--space-4);max-width:58ch;">
+          This page is two things at once: a <strong style="color:var(--color-text)">personal dashboard</strong> for my Japanese progress, and a living coding project I keep improving. It started as a simple idea: one place to track WaniKani, Duolingo, class notes, and useful tools - and it's been growing from there.
+        </p>
+        <p style="font-size:var(--text-base);color:var(--color-text-muted);max-width:58ch;">
+          The goal isn't perfection. It's to keep learning: Japanese, and how to build things that are actually useful.
+        </p>
+        <div style="display:flex;flex-wrap:wrap;gap:var(--space-3);margin-top:var(--space-6);">
+          <div class="about-tag">🏙️ Barcelona</div>
+          <div class="about-tag">💻 Software Engineering</div>
+          <div class="about-tag">🔬 Biomedical Systems</div>
+          <div class="about-tag">🇯🇵 Japanese Learner</div>
+        </div>
+      </div>
+
+      <!-- Right: stats cards -->
+      <div class="fade-in" style="display:flex;flex-direction:column;gap:var(--space-3);">
+
+        <div class="about-stat-card">
+          <div class="about-stat-icon" style="background:var(--color-primary-light);">🔥</div>
+          <div>
+            <div class="about-stat-val">2,200+ days</div>
+            <div class="about-stat-label">Daily Duolingo — started before it was cool</div>
+          </div>
+        </div>
+
+        <div class="about-stat-card">
+          <div class="about-stat-icon" style="background:var(--color-gold-light);">📖</div>
+          <div>
+            <div class="about-stat-val">~2 years at academy</div>
+            <div class="about-stat-label">Weekly Japanese classes in Barcelona — Minna no Nihongo 2 at <a href="https://japonia.es/">Japonia</a></div>
+          </div>
+        </div>
+
+        <div class="about-stat-card">
+          <div class="about-stat-icon" style="background:var(--color-success-light);">⛩️</div>
+          <div>
+            <div class="about-stat-val">WaniKani + Kakehashi</div>
+            <div class="about-stat-label">Kanji SRS via Kakehashi app — started February 2026</div>
+          </div>
+        </div>
+
+        <div class="about-stat-card">
+          <div class="about-stat-icon" style="background:var(--color-surface-offset);">🛠️</div>
+          <div>
+            <div class="about-stat-val">Built by me, for me</div>
+            <div class="about-stat-label">This page is a real project — Python, PyQt6, web dev, all self-taught alongside the degree</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PROGRESS ───────────────────────────────────────────── -->
+<section class="section" id="progress">
+  <div class="container">
+    <div class="section-header fade-in">
+      <div class="section-label">Overview</div>
+      <h2 class="section-title">Current Progress</h2>
+      <p class="section-desc">An honest snapshot of where things stand across every learning platform.</p>
+    </div>
+    <div class="progress-grid">
+
+      <div class="progress-card fade-in">
+        <div class="progress-card-header">
+          <div class="progress-card-icon red">🔥</div>
+          <span class="progress-badge">Active</span>
+        </div>
+        <h3>Duolingo</h3>
+        <p class="sub">Japanese · Level 63 · 49,261 XP · Section 5, Unit 7</p>
+        <div class="progress-bar-wrap">
+          <div class="progress-bar-label"><span>Streak</span><span>2,200+ days</span></div>
+          <div class="progress-bar"><div class="progress-bar-fill fill-red" style="width:100%"></div></div>
+        </div>
+        <div class="progress-bar-wrap">
+          <div class="progress-bar-label"><span>Level 63 · 49,261 XP</span><span>Section 5 / Unit 7</span></div>
+          <div class="progress-bar"><div class="progress-bar-fill fill-red" style="width:63%"></div></div>
+        </div>
+        <p class="progress-detail">Unit 7: "Talk about education" — Section 5. 2,200+ days and counting.</p>
+      </div>
+
+      <div class="progress-card fade-in">
+        <div class="progress-card-header">
+          <div class="progress-card-icon gold">⛩️</div>
+          <span class="progress-badge gold" id="wk-level-badge">…</span>
+        </div>
+        <h3>WaniKani</h3>
+        <p class="sub">Kanji & Vocabulary SRS · via Kakehashi</p>
+        <div class="progress-bar-wrap">
+          <div class="progress-bar-label"><span>Level progress</span><span id="wk-level-text">…/60</span></div>
+          <div class="progress-bar"><div class="progress-bar-fill fill-gold" id="wk-level-bar" style="width:0%"></div></div>
+        </div>
+        <div class="progress-bar-wrap">
+          <div class="progress-bar-label"><span>Started</span><span>Feb 2026</span></div>
+          <div class="progress-bar"><div class="progress-bar-fill fill-gold" style="width:25%"></div></div>
+        </div>
+        <p class="progress-detail" id="wk-srs-summary">Loading SRS data…</p>
+      </div>
+
+      <div class="progress-card fade-in">
+        <div class="progress-card-header">
+          <div class="progress-card-icon green">📖</div>
+          <span class="progress-badge green">In progress</span>
+        </div>
+        <h3>Minna no Nihongo</h3>
+        <p class="sub">Japanese Academy · ~2 years</p>
+        <div class="progress-bar-wrap">
+          <div class="progress-bar-label"><span>Book 2 progress</span><span>~50%</span></div>
+          <div class="progress-bar"><div class="progress-bar-fill fill-green" style="width:50%"></div></div>
+        </div>
+        <div class="progress-bar-wrap">
+          <div class="progress-bar-label"><span>Overall (Books 1+2)</span><span>~75%</span></div>
+          <div class="progress-bar"><div class="progress-bar-fill fill-green" style="width:75%"></div></div>
+        </div>
+        <p class="progress-detail">Covers N4–N3 grammar. Weekly classes in Barcelona.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── WANIKANI ────────────────────────────────────────────── -->
+<section class="section section-alt" id="wanikani">
+  <div class="container">
+    <div class="section-header fade-in">
+      <div class="section-label">WaniKani · <span id="wk-section-label">Loading…</span></div>
+      <h2 class="section-title">Active Flashcards</h2>
+      <p class="section-desc">Tap any card to flip it. Filter by type. Update the data below as you level up.</p>
+    </div>
+    <!-- WaniKani API Token Input -->
+    <div id="wk-api-banner" style="
+      background:var(--color-surface-offset);
+      border:1px solid var(--color-border);
+      border-radius:var(--radius-xl);
+      padding:var(--space-5) var(--space-6);
+      margin-bottom:var(--space-6);
+      display:flex; flex-wrap:wrap; align-items:center; gap:var(--space-4);">
+      <div style="flex:1; min-width:200px;">
+        <div style="font-size:var(--text-sm);font-weight:700;color:var(--color-text);margin-bottom:var(--space-1);">🔑 Connect WaniKani API</div>
+        <div style="font-size:var(--text-xs);color:var(--color-text-muted);">
+          Paste your API token from <a href="https://www.wanikani.com/settings/personal_access_tokens" target="_blank" rel="noopener noreferrer" style="color:var(--color-primary);">WaniKani → Settings → Personal Access Tokens</a>. It stays in your browser only.
+        </div>
+      </div>
+      <div style="display:flex;gap:var(--space-2);flex-wrap:wrap;">
+        <input id="wk-token-input" type="password" placeholder="Enter WaniKani API token…"
+          style="font:inherit;font-size:var(--text-sm);padding:var(--space-2) var(--space-3);
+                 border:1px solid var(--color-border);border-radius:var(--radius-md);
+                 background:var(--color-surface);color:var(--color-text);
+                 width:260px;outline:none;transition:border-color 180ms ease;">
+        <button id="wk-connect-btn" onclick="connectWaniKani()"
+          style="font:inherit;font-size:var(--text-sm);font-weight:600;
+                 padding:var(--space-2) var(--space-4);border-radius:var(--radius-md);
+                 background:var(--color-gold);color:#000;border:none;cursor:pointer;
+                 transition:opacity 180ms ease;">Load Live Data</button>
+        <button id="wk-clear-btn" onclick="clearWaniKani()" style="display:none;font:inherit;font-size:var(--text-sm);
+                 padding:var(--space-2) var(--space-3);border-radius:var(--radius-md);
+                 border:1px solid var(--color-border);background:none;color:var(--color-text-muted);cursor:pointer;">Disconnect</button>
+      </div>
+      <div id="wk-api-status" style="width:100%;font-size:var(--text-xs);"></div>
+    </div>
+    <div class="fade-in" style="margin-bottom:var(--space-6);background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-xl);padding:var(--space-5);box-shadow:var(--shadow-sm);">
+  <div style="display:flex;justify-content:space-between;gap:var(--space-4);align-items:flex-end;flex-wrap:wrap;margin-bottom:var(--space-4);">
+    <div>
+      <div style="font-size:var(--text-xs);font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--color-primary);margin-bottom:var(--space-1);">WaniKani snapshot</div>
+      <div style="font-family:var(--font-display);font-size:var(--text-lg);font-weight:800;color:var(--color-text);">SRS distribution</div>
+    </div>
+    <div style="font-size:var(--text-xs);color:var(--color-text-muted);">Saved in your browser with localStorage</div>
+  </div>
+  <div style="height:220px;">
+    <canvas id="wk-srs-chart"></canvas>
+  </div>
+</div>
+    <div class="wk-filters fade-in" role="group" aria-label="Filter cards">
+      <button class="wk-filter-btn active" data-type="all">All</button>
+      <button class="wk-filter-btn" data-type="radical">🔵 Radicals</button>
+      <button class="wk-filter-btn" data-type="kanji">🩷 Kanji</button>
+      <button class="wk-filter-btn" data-type="vocab">🟣 Vocab</button>
+    </div>
+    <div class="wk-grid" id="wk-grid"></div>
+  </div>
+</section>
+
+<!-- ── DUOLINGO ────────────────────────────────────────────── -->
+<section class="section" id="duolingo">
+  <div class="container">
+    <div class="section-header fade-in">
+      <div class="section-label">Duolingo</div>
+      <h2 class="section-title">Course Topics</h2>
+      <p class="section-desc">Units completed and currently in progress. Manually updated — your honest log.</p>
+    </div>
+    <div class="duo-grid" id="duo-grid"></div>
+  </div>
+</section>
+
+<!-- ── CHEAT SHEETS ────────────────────────────────────────── -->
+<section class="section section-alt" id="cheatsheets">
+  <div class="container-md">
+    <div class="section-header fade-in">
+      <div class="section-label">Reference</div>
+      <h2 class="section-title">Cheat Sheets</h2>
+      <p class="section-desc">Your personal quick-reference tables. Add more tabs as you learn new grammar.</p>
+    </div>
+    <div class="sheets-tabs fade-in" role="tablist">
+      <button class="sheet-tab active" role="tab" aria-selected="true"  data-sheet="particles">Particles</button>
+      <button class="sheet-tab"        role="tab" aria-selected="false" data-sheet="verbs">Verb Groups</button>
+      <button class="sheet-tab"        role="tab" aria-selected="false" data-sheet="counters">Counters</button>
+      <button class="sheet-tab"        role="tab" aria-selected="false" data-sheet="expressions">Expressions</button>
+    </div>
+
+    <!-- PARTICLES -->
+    <div class="sheet-panel active" id="sheet-particles" role="tabpanel">
+      <div class="table-wrap">
+        <div class="table-section-title">Common Particles — は・が・を・に・で・へ・と・も</div>
+        <table class="cheat-table">
+          <thead><tr><th>Particle</th><th>Main use</th><th>Example</th><th>Notes</th></tr></thead>
+          <tbody>
+            <tr><td><span class="jp">は</span> (wa)</td><td>Topic marker</td><td><span class="jp">私は学生です。</span></td><td>Contrasts or sets the topic</td></tr>
+            <tr><td><span class="jp">が</span> (ga)</td><td>Subject marker</td><td><span class="jp">猫がいます。</span></td><td>Identifies who does the action</td></tr>
+            <tr><td><span class="jp">を</span> (o)</td><td>Direct object</td><td><span class="jp">水を飲みます。</span></td><td>What receives the verb's action</td></tr>
+            <tr><td><span class="jp">に</span> (ni)</td><td>Direction / time / location (exist)</td><td><span class="jp">東京に行きます。</span></td><td>Destination, point in time, where things exist</td></tr>
+            <tr><td><span class="jp">で</span> (de)</td><td>Location (action) / means</td><td><span class="jp">カフェで勉強します。</span></td><td>Where actions happen; tool used</td></tr>
+            <tr><td><span class="jp">へ</span> (e)</td><td>Direction (softer)</td><td><span class="jp">日本へ行きたい。</span></td><td>Similar to に for movement, more literary</td></tr>
+            <tr><td><span class="jp">と</span> (to)</td><td>With / and (exhaustive)</td><td><span class="jp">友達と行きます。</span></td><td>Accompaniment or complete list</td></tr>
+            <tr><td><span class="jp">も</span> (mo)</td><td>Also / too</td><td><span class="jp">私も好きです。</span></td><td>Replaces は or が</td></tr>
+            <tr><td><span class="jp">から</span> (kara)</td><td>From / because</td><td><span class="jp">９時から始まります。</span></td><td>Starting point or reason</td></tr>
+            <tr><td><span class="jp">まで</span> (made)</td><td>Until / up to</td><td><span class="jp">駅まで歩きます。</span></td><td>End point in time or space</td></tr>
+            <tr><td><span class="jp">の</span> (no)</td><td>Possession / noun modifier</td><td><span class="jp">私の本です。</span></td><td>Links two nouns</td></tr>
+            <tr><td><span class="jp">よ</span> (yo)</td><td>Sentence-final: assertion</td><td><span class="jp">これはおいしいですよ。</span></td><td>Tells new info to listener</td></tr>
+            <tr><td><span class="jp">ね</span> (ne)</td><td>Sentence-final: seeking agreement</td><td><span class="jp">いい天気ですね。</span></td><td>Shared feeling / seeking confirmation</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- VERBS -->
+    <div class="sheet-panel" id="sheet-verbs" role="tabpanel">
+      <div class="table-wrap">
+        <div class="table-section-title">Verb Group Summary</div>
+        <table class="cheat-table">
+          <thead><tr><th>Group</th><th>Also called</th><th>Rule</th><th>Example (dict form → masu)</th></tr></thead>
+          <tbody>
+            <tr><td><span class="tag">Group 1</span></td><td>う-verbs / Godan</td><td>Ends in u-sound consonant. Change う→い + ます</td><td><span class="jp">飲む → 飲みます</span></td></tr>
+            <tr><td><span class="tag blue">Group 2</span></td><td>る-verbs / Ichidan</td><td>Ends in る (with e or i before). Drop る + ます</td><td><span class="jp">食べる → 食べます</span></td></tr>
+            <tr><td><span class="tag green">Group 3</span></td><td>Irregular</td><td>Only two: する and くる</td><td><span class="jp">する → します / くる → きます</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="table-wrap">
+        <div class="table-section-title">て-form (te-form) — most useful conjugation</div>
+        <table class="cheat-table">
+          <thead><tr><th>Group</th><th>Ending → て-form</th><th>Example</th></tr></thead>
+          <tbody>
+            <tr><td><span class="tag">G1</span></td><td>く→いて / ぐ→いで</td><td><span class="jp">書く → 書いて</span></td></tr>
+            <tr><td><span class="tag">G1</span></td><td>す→して</td><td><span class="jp">話す → 話して</span></td></tr>
+            <tr><td><span class="tag">G1</span></td><td>む/ぬ/ぶ→んで</td><td><span class="jp">飲む → 飲んで</span></td></tr>
+            <tr><td><span class="tag">G1</span></td><td>う/つ/る→って</td><td><span class="jp">買う → 買って</span></td></tr>
+            <tr><td><span class="tag blue">G2</span></td><td>る→て</td><td><span class="jp">食べる → 食べて</span></td></tr>
+            <tr><td><span class="tag green">G3</span></td><td>irregular</td><td><span class="jp">する→して / くる→きて</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- COUNTERS -->
+    <div class="sheet-panel" id="sheet-counters" role="tabpanel">
+      <div class="table-wrap">
+        <div class="table-section-title">Essential Counters</div>
+        <table class="cheat-table">
+          <thead><tr><th>Counter</th><th>Used for</th><th>1・2・3</th><th>Watch out</th></tr></thead>
+          <tbody>
+            <tr><td><span class="jp">〜つ</span> (tsu)</td><td>General objects (up to 9)</td><td><span class="jp">ひとつ・ふたつ・みっつ</span></td><td>Native Japanese numbers only</td></tr>
+            <tr><td><span class="jp">〜本</span> (hon)</td><td>Long thin objects (pens, bottles)</td><td><span class="jp">いっぽん・にほん・さんぼん</span></td><td>Irregular readings: 1,3,6,8,10</td></tr>
+            <tr><td><span class="jp">〜枚</span> (mai)</td><td>Flat objects (paper, plates, shirts)</td><td><span class="jp">いちまい・にまい・さんまい</span></td><td>Regular</td></tr>
+            <tr><td><span class="jp">〜冊</span> (satsu)</td><td>Bound books</td><td><span class="jp">いっさつ・にさつ・さんさつ</span></td><td>Irregular at 1, 8, 10</td></tr>
+            <tr><td><span class="jp">〜台</span> (dai)</td><td>Machines, vehicles</td><td><span class="jp">いちだい・にだい・さんだい</span></td><td>Regular</td></tr>
+            <tr><td><span class="jp">〜人</span> (nin)</td><td>People</td><td><span class="jp">ひとり・ふたり・さんにん</span></td><td>1 and 2 are irregular!</td></tr>
+            <tr><td><span class="jp">〜匹</span> (hiki)</td><td>Small animals</td><td><span class="jp">いっぴき・にひき・さんびき</span></td><td>Irregular 1,3,6,8,10</td></tr>
+            <tr><td><span class="jp">〜階</span> (kai)</td><td>Floor levels</td><td><span class="jp">いっかい・にかい・さんがい</span></td><td>3F is さんがい</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- EXPRESSIONS -->
+    <div class="sheet-panel" id="sheet-expressions" role="tabpanel">
+      <div class="table-wrap">
+        <div class="table-section-title">Useful Expressions & Set Phrases</div>
+        <table class="cheat-table">
+          <thead><tr><th>Japanese</th><th>Reading</th><th>Meaning / When to use</th></tr></thead>
+          <tbody>
+            <tr><td><span class="jp">よろしくお願いします</span></td><td>yoroshiku onegaishimasu</td><td>Please treat me well / I'm counting on you</td></tr>
+            <tr><td><span class="jp">お疲れ様です</span></td><td>otsukaresama desu</td><td>Good work / you must be tired (colleague greeting)</td></tr>
+            <tr><td><span class="jp">いただきます</span></td><td>itadakimasu</td><td>Said before eating</td></tr>
+            <tr><td><span class="jp">ごちそうさまでした</span></td><td>gochisousama deshita</td><td>Said after eating</td></tr>
+            <tr><td><span class="jp">しつれいします</span></td><td>shitsureishimasu</td><td>Excuse me (when leaving / interrupting)</td></tr>
+            <tr><td><span class="jp">〜てもいいですか？</span></td><td>〜te mo ii desu ka</td><td>May I...? (asking permission)</td></tr>
+            <tr><td><span class="jp">〜なければなりません</span></td><td>〜nakereba narimasen</td><td>Must do... (obligation)</td></tr>
+            <tr><td><span class="jp">〜たいです</span></td><td>〜tai desu</td><td>I want to do... (desire)</td></tr>
+            <tr><td><span class="jp">どういたしまして</span></td><td>dou itashimashite</td><td>You're welcome (formal)</td></tr>
+            <tr><td><span class="jp">そうですね</span></td><td>sou desu ne</td><td>That's right / I see (agreement/stalling)</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── RESOURCES ───────────────────────────────────────────── -->
+<section class="section" id="resources">
+  <div class="container">
+    <div class="section-header fade-in">
+      <div class="section-label">Toolbox</div>
+      <h2 class="section-title">Resources & Tools</h2>
+      <p class="section-desc">Everything useful, one click away. No more opening 12 tabs from scratch.</p>
+    </div>
+    <div id="resources-container"></div>
+  </div>
+</section>
+
+<footer>
+  <p>手作りの日本語ハブ · Built by Jan · <a href="https://github.com/j2gg2" target="_blank" rel="noopener noreferrer" style="color:var(--color-primary)">j2gg2 on GitHub</a></p>
+</footer>
+
+<script>
+  const LS_KEY = 'j2gg2-japanese-hub-v1';
+
+function loadPrefs() {
+  try { return JSON.parse(localStorage.getItem(LS_KEY) || '{}'); }
+  catch { return {}; }
+}
+
+function savePrefs(patch) {
+  const current = loadPrefs();
+  localStorage.setItem(LS_KEY, JSON.stringify({ ...current, ...patch }));
+}
+/* ── THEME TOGGLE ─────────────────────────────────────────── */
+(function(){
+  const btn = document.querySelector('[data-theme-toggle]');
+  const root = document.documentElement;
+  const prefs = loadPrefs();
+  let dark = prefs.theme ? prefs.theme === 'dark' : root.getAttribute('data-theme') === 'dark';
+
+  function applyTheme(isDark) {
+    savePrefs({ theme: isDark ? 'dark' : 'light' });
+root.setAttribute('data-theme', isDark ? 'dark' : 'light');
+    btn.innerHTML = isDark
+      ? '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>'
+      : '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>';
+    btn.setAttribute('aria-label', 'Switch to ' + (isDark ? 'light' : 'dark') + ' mode');
+  }
+  applyTheme(dark);
+  btn.addEventListener('click', () => { dark = !dark; applyTheme(dark); });
+})();
+
+/* ── HAMBURGER ────────────────────────────────────────────── */
+document.getElementById('hamburger').addEventListener('click', function() {
+  const links = document.getElementById('nav-links');
+  const open = links.classList.toggle('open');
+  this.setAttribute('aria-expanded', open);
+});
+
+/* ── ACTIVE NAV LINK ──────────────────────────────────────── */
+const navLinks = document.querySelectorAll('.nav-links a');
+const sections = document.querySelectorAll('section[id], header[id]');
+window.addEventListener('scroll', () => {
+  let cur = '';
+  sections.forEach(s => { if (window.scrollY >= s.offsetTop - 120) cur = s.id; });
+  navLinks.forEach(a => {
+    a.classList.toggle('active', a.getAttribute('href') === '#' + cur);
+  });
+}, { passive: true });
+
+/* ── WANIKANI DATA ────────────────────────────────────────── */
+// 📝 UPDATE THIS as you level up. Add/remove cards as needed.
+// type: "radical" | "kanji" | "vocab"
+// char: the Japanese character(s)
+// meaning: English meaning
+// reading: reading in hiragana/katakana
+// hint: optional mnemonic or example
+/* ── WANIKANI API INTEGRATION ──────────────────────────────────── */
+// Fallback static data (level 5) — shown when no API token is entered
+const wkFallback = [
+  { type:"radical", char:"一", meaning:"Ground / One",      reading:"いち",      hint:"The ground level" },
+  { type:"radical", char:"二", meaning:"Two",               reading:"に",        hint:"Two lines stacked" },
+  { type:"radical", char:"口", meaning:"Mouth",             reading:"くち",      hint:"A square open mouth" },
+  { type:"radical", char:"木", meaning:"Tree",              reading:"き",        hint:"Trunk with branches & roots" },
+  { type:"radical", char:"山", meaning:"Mountain",          reading:"やま",      hint:"Three peaks" },
+  { type:"kanji",   char:"日", meaning:"Sun / Day",         reading:"に・ひ",    hint:"The sun is a window to the sky" },
+  { type:"kanji",   char:"月", meaning:"Moon / Month",      reading:"つき・げつ", hint:"The moon is a crescent" },
+  { type:"kanji",   char:"火", meaning:"Fire",              reading:"ひ・か",    hint:"A person spreading flames" },
+  { type:"kanji",   char:"水", meaning:"Water",             reading:"みず・すい", hint:"Flowing water lines" },
+  { type:"kanji",   char:"木", meaning:"Tree / Wood",       reading:"き・もく",  hint:"A tree with roots" },
+  { type:"kanji",   char:"金", meaning:"Gold / Money",      reading:"きん・かね", hint:"Gold buried in the earth" },
+  { type:"kanji",   char:"土", meaning:"Dirt / Earth",      reading:"つち・ど",  hint:"A cross in the ground" },
+  { type:"kanji",   char:"山", meaning:"Mountain",          reading:"やま・さん", hint:"Three peaks rising" },
+  { type:"kanji",   char:"川", meaning:"River",             reading:"かわ・せん", hint:"Three flowing lines" },
+  { type:"kanji",   char:"田", meaning:"Rice Paddy",        reading:"た・でん",  hint:"A grid of paddy fields" },
+  { type:"kanji",   char:"人", meaning:"Person",            reading:"ひと・じん", hint:"A person walking" },
+  { type:"kanji",   char:"大", meaning:"Big / Large",       reading:"おお・だい", hint:"A person stretching wide" },
+  { type:"kanji",   char:"中", meaning:"Middle / Inside",   reading:"なか・ちゅう", hint:"An arrow through the center" },
+  { type:"kanji",   char:"上", meaning:"Up / Above",        reading:"うえ・じょう", hint:"A line above the ground" },
+  { type:"kanji",   char:"下", meaning:"Down / Below",      reading:"した・か",  hint:"A line below the ground" },
+  { type:"vocab",   char:"山道",   meaning:"Mountain Path",  reading:"やまみち", hint:"山(mountain) + 道(road)" },
+  { type:"vocab",   char:"川口",   meaning:"Mouth of River", reading:"かわぐち", hint:"Famous surname too" },
+  { type:"vocab",   char:"大人",   meaning:"Adult",          reading:"おとな",   hint:"Big + person = adult" },
+  { type:"vocab",   char:"上手",   meaning:"Skilled / Good at", reading:"じょうず", hint:"日本語が上手ですね！" },
+  { type:"vocab",   char:"下手",   meaning:"Unskilled / Bad at", reading:"へた",  hint:"Opposite of 上手" },
+  { type:"vocab",   char:"日本語", meaning:"Japanese Language", reading:"にほんご", hint:"Japan + language" },
+  { type:"vocab",   char:"水曜日", meaning:"Wednesday",      reading:"すいようび", hint:"Water day — W for Water!" },
+];
+
+let wkActiveData = wkFallback;
+let wkToken = null;
+
+// ── SRS stage helpers ──────────────────────────────────────────
+const SRS_NAMES = ['','Apprentice I','Apprentice II','Apprentice III','Apprentice IV',
+                   'Guru I','Guru II','Master','Enlightened','Burned'];
+const SRS_COLORS = ['','#f100a1','#f100a1','#f100a1','#f100a1',
+                    '#a800a8','#a800a8','#176db1','#0093dd','#535353'];
+
+function wkHeaders(token) {
+  return { 'Authorization': 'Bearer ' + token, 'Wanikani-Revision': '20170710' };
+}
+
+// ── Paginated fetch helper ──────────────────────────────────────
+async function wkFetchAll(url, token) {
+  let results = [], next = url;
+  while (next) {
+    const res = await fetch(next, { headers: wkHeaders(token) });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const json = await res.json();
+    results = results.concat(json.data);
+    next = json.pages && json.pages.next_url ? json.pages.next_url : null;
+  }
+  return results;
+}
+
+// ── Main connect function ───────────────────────────────────────
+async function connectWaniKani() {
+  const input = document.getElementById('wk-token-input');
+  const token = input.value.trim();
+  if (!token) { setStatus('⚠️ Please paste your API token first.', 'var(--color-gold)'); return; }
+
+  const btn = document.getElementById('wk-connect-btn');
+  btn.textContent = 'Loading…'; btn.style.opacity = '0.6'; btn.disabled = true;
+  setStatus('🔄 Fetching your data from WaniKani…', 'var(--color-text-muted)');
+
+  try {
+    // 1. User info → level
+    const userRes = await fetch('https://api.wanikani.com/v2/user', { headers: wkHeaders(token) });
+    if (!userRes.ok) throw new Error('Invalid token or network error (HTTP ' + userRes.status + ')');
+    const userData = await userRes.json();
+    const level = userData.data.level;
+    const username = userData.data.username;
+
+    // 2. Assignments for current level (active items)
+    setStatus('🔄 Loading assignments for level ' + level + '…', 'var(--color-text-muted)');
+    const assignments = await wkFetchAll(
+      `https://api.wanikani.com/v2/assignments?levels=${level}&started=true`,
+      token
+    );
+
+    // 3. SRS summary counts
+    const srsCounts = {1:0,2:0,3:0,4:0,5:0,6:0,7:0,8:0,9:0};
+    assignments.forEach(a => { if (srsCounts[a.data.srs_stage] !== undefined) srsCounts[a.data.srs_stage]++; });
+    const apprentice = srsCounts[1]+srsCounts[2]+srsCounts[3]+srsCounts[4];
+    const guru       = srsCounts[5]+srsCounts[6];
+    const master     = srsCounts[7];
+    const enlightened= srsCounts[8];
+    const burned     = srsCounts[9];
+
+    // 4. Subject IDs for current-level assignments
+    const subjectIds = assignments.map(a => a.data.subject_id);
+    if (subjectIds.length === 0) throw new Error('No started assignments found for level ' + level + '. Try after unlocking items.');
+
+    // 5. Fetch subjects in chunks of 500 (API max)
+    setStatus('🔄 Fetching subject details…', 'var(--color-text-muted)');
+    const chunks = [];
+    for (let i = 0; i < subjectIds.length; i += 500) chunks.push(subjectIds.slice(i, i+500));
+
+    let subjects = [];
+    for (const chunk of chunks) {
+      const s = await wkFetchAll(
+        `https://api.wanikani.com/v2/subjects?ids=${chunk.join(',')}`,
+        token
+      );
+      subjects = subjects.concat(s);
+    }
+
+    // 6. Map subjects to card data, merged with assignment SRS info
+    const assignMap = {};
+    assignments.forEach(a => { assignMap[a.data.subject_id] = a.data.srs_stage; });
+
+    wkActiveData = subjects.map(s => {
+      const d = s.data;
+      const type = s.object === 'kana_vocabulary' ? 'vocab' : s.object;
+      const chars = d.characters || (d.character_images ? '〓' : '?');
+      const meaning = d.meanings ? d.meanings.filter(m=>m.accepted_answer).map(m=>m.meaning).join(' / ') : '';
+      const reading = d.readings
+        ? d.readings.filter(r=>r.accepted_answer).map(r=>r.reading).join('・')
+        : (d.characters || '');
+      const srsStage = assignMap[s.id] || 0;
+      const hint = d.meaning_mnemonic
+        ? d.meaning_mnemonic.replace(/<[^>]+>/g,'').slice(0,80) + '…'
+        : 'No mnemonic available.';
+      return { type, char: chars, meaning, reading, hint, srs: srsStage };
+    });
+
+    // 7. Update UI
+    wkToken = token;
+    updateWKStats(level, apprentice, guru, master, enlightened, burned, username);
+    renderWK('all');
+    function renderWKChart() {
+  const canvas = document.getElementById('wk-srs-chart');
+  if (!canvas || typeof Chart === 'undefined') return;
+
+  const counts = { apprentice:0, guru:0, master:0, enlightened:0, burned:0 };
+
+  wkActiveData.forEach(c => {
+    const s = c.srs || 0;
+    if (s >= 1 && s <= 4) counts.apprentice++;
+    else if (s === 5 || s === 6) counts.guru++;
+    else if (s === 7) counts.master++;
+    else if (s === 8) counts.enlightened++;
+    else if (s === 9) counts.burned++;
+  });
+
+  const ctx = canvas.getContext('2d');
+  if (window.__wkChart) window.__wkChart.destroy();
+
+  window.__wkChart = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: ['Apprentice','Guru','Master','Enlightened','Burned'],
+      datasets: [{
+        data: [counts.apprentice, counts.guru, counts.master, counts.enlightened, counts.burned],
+        backgroundColor: ['#f100a1','#a800a8','#176db1','#0093dd','#555555'],
+        borderWidth: 0,
+        hoverOffset: 6,
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          position: 'bottom',
+          labels: {
+            color: getComputedStyle(document.documentElement).getPropertyValue('--color-text').trim() || '#fff'
+          }
+        }
+      },
+      cutout: '65%'
+    }
+  });
+}
+    renderWK('all');
+
+    setStatus(
+      `✅ Connected as <strong>${username}</strong> · Level ${level} · ${wkActiveData.length} items loaded`,
+      'var(--color-success)'
+    );
+    document.getElementById('wk-clear-btn').style.display = 'inline-flex';
+    btn.style.display = 'none';
+    input.style.display = 'none';
+
+  } catch(e) {
+    setStatus('❌ Error: ' + e.message, 'var(--color-primary)');
+    btn.textContent = 'Load Live Data'; btn.style.opacity = '1'; btn.disabled = false;
+  }
+}
+
+function clearWaniKani() {
+  wkToken = null;
+  wkActiveData = wkFallback;
+  document.getElementById('wk-token-input').style.display = 'inline-block';
+  document.getElementById('wk-token-input').value = '';
+  document.getElementById('wk-connect-btn').style.display = 'inline-flex';
+  document.getElementById('wk-connect-btn').textContent = 'Load Live Data';
+  document.getElementById('wk-connect-btn').style.opacity = '1';
+  document.getElementById('wk-connect-btn').disabled = false;
+  document.getElementById('wk-clear-btn').style.display = 'none';
+  setStatus('Disconnected. Showing fallback data.', 'var(--color-text-muted)');
+  // Reset stats to static
+  document.getElementById('wk-level-pill').textContent = 'Level 5';
+  document.getElementById('wk-level-badge').textContent = 'Level 5';
+  document.getElementById('wk-section-label').textContent = 'Level 5 — Fallback Data';
+  document.getElementById('wk-level-text').textContent = '5 / 60';
+  document.getElementById('wk-level-bar').style.width = '8%';
+  document.getElementById('wk-srs-summary').textContent = '~170 kanji unlocked. Apprentice → Guru → Master → Enlightened → Burned.';
+  renderWK('all');
+}
+
+function setStatus(msg, color) {
+  const el = document.getElementById('wk-api-status');
+  el.innerHTML = `<span style="color:${color}">${msg}</span>`;
+}
+
+function updateWKStats(level, apprentice, guru, master, enlightened, burned, username) {
+  const pct = Math.round((level / 60) * 100);
+  document.getElementById('wk-level-pill').textContent = 'Level ' + level;
+  document.getElementById('wk-level-badge').textContent = 'Level ' + level;
+  document.getElementById('wk-section-label').textContent = `Level ${level} — Live Data`;
+  document.getElementById('wk-level-text').textContent = level + ' / 60';
+  document.getElementById('wk-level-bar').style.width = pct + '%';
+  document.getElementById('wk-srs-summary').textContent =
+    `🌸 Apprentice: ${apprentice}  |  🟣 Guru: ${guru}  |  🔵 Master: ${master}  |  ✨ Enlightened: ${enlightened}  |  🔥 Burned: ${burned}`;
+}
+
+// ── Render cards ────────────────────────────────────────────────
+const grid = document.getElementById('wk-grid');
+function renderWK(filter) {
+  grid.innerHTML = '';
+  const filtered = wkActiveData.filter(c => filter === 'all' || c.type === filter);
+  if (filtered.length === 0) {
+    grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;color:var(--color-text-muted);padding:var(--space-8);font-size:var(--text-sm);">No items found for this filter.</div>';
+    return;
+  }
+  filtered.forEach(c => {
+    const srsColor = SRS_COLORS[c.srs] || '#555';
+    const srsLabel = SRS_NAMES[c.srs] || '';
+    const el = document.createElement('div');
+    el.className = `wk-card wk-type-${c.type}`;
+    el.setAttribute('role','button');
+    el.setAttribute('tabindex','0');
+    el.setAttribute('aria-label', c.char + ' — tap to reveal');
+    el.innerHTML = `
+      <div class="wk-card-inner">
+        <div class="wk-face wk-front">
+          ${srsLabel ? `<div style="position:absolute;top:8px;right:10px;font-size:9px;font-weight:700;color:rgba(255,255,255,0.7);letter-spacing:.06em;text-transform:uppercase">${srsLabel}</div>` : ''}
+          <div class="wk-char">${c.char}</div>
+          <div class="wk-type-label">${c.type}</div>
+        </div>
+        <div class="wk-face wk-back">
+          <div class="wk-meaning">${c.meaning}</div>
+          <div class="wk-reading">${c.reading}</div>
+          <div class="wk-hint">${c.hint}</div>
+        </div>
+      </div>`;
+    el.addEventListener('click', () => el.classList.toggle('flipped'));
+    el.addEventListener('keydown', e => { if(e.key==='Enter'||e.key===' ') el.classList.toggle('flipped'); });
+    grid.appendChild(el);
+  });
+}
+renderWK('all');
+document.querySelectorAll('.wk-filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.wk-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderWK(btn.dataset.type);
+  });
+});
+/* ── CHEAT SHEET TABS ─────────────────────────────────────────── */
+document.querySelectorAll('.sheet-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.sheet-tab').forEach(t => {
+      t.classList.remove('active');
+      t.setAttribute('aria-selected', 'false');
+    });
+    document.querySelectorAll('.sheet-panel').forEach(p => p.classList.remove('active'));
+    tab.classList.add('active');
+    tab.setAttribute('aria-selected', 'true');
+    document.getElementById('sheet-' + tab.dataset.sheet).classList.add('active');
+  });
+});
+
+/* ── DUOLINGO UNITS ───────────────────────────────────────────── */
+const duoUnits = [
+  { num:1,  title:'Hiragana & Katakana',       topics:'あいうえお, basic kana, greetings',                                     status:'done' },
+  { num:2,  title:'Greetings & Introductions',  topics:'こんにちは, はじめまして, naming yourself, polite speech',              status:'done' },
+  { num:3,  title:'Travel & Directions',        topics:'どこ, 〜に行く, transportation, station',                              status:'done' },
+  { num:4,  title:'Food & Restaurants',         topics:'〜をください, いくら, numbers, ordering',                              status:'done' },
+  { num:5,  title:'Time & Daily Routine',       topics:'何時, 〜に起きる, AM/PM, frequency adverbs',                           status:'done' },
+  { num:6,  title:'Family & Relationships',     topics:'family vocab, possession の, age, introducing others',                  status:'done' },
+  { num:7,  title:'Shopping & Numbers',         topics:'大きい/小さい, colors, numbers 1–10000, this/that/that over there',      status:'done' },
+  { num:8,  title:'Nature & Weather',           topics:'天気, 季節, adjective conjugation い/な',                               status:'done' },
+  { num:9,  title:'Hobbies & Activities',       topics:'〜が好き, 〜たい, te-form, can/cannot できる',                           status:'done' },
+  { num:10, title:'Work & School',              topics:'職業, subjects, 〜ている progressive, places',                         status:'done' },
+  { num:11, title:'Health & Body',              topics:'体の部位, 〜が痛い, doctor visits, て-form requests',                  status:'done' },
+  { num:12, title:'Town & Community',           topics:'〜がある, location words, maps, ください',                             status:'done' },
+  { num:13, title:'School & Education',         topics:'Talk about education, 〜という, school subjects, describing learning', status:'inprogress' },
+];
+
+const duoGrid = document.getElementById('duo-grid');
+duoUnits.forEach(u => {
+  const el = document.createElement('div');
+  el.className = 'duo-unit';
+  el.innerHTML = `
+    <div class="duo-unit-header">
+      <div class="duo-unit-num ${u.status === 'done' ? 'done' : ''}">${u.num}</div>
+      <h4>${u.title}</h4>
+    </div>
+    <p class="duo-topics">${u.topics}</p>
+    <span class="duo-status ${u.status === 'done' ? 'done' : 'prog'}">
+      ${u.status === 'done' ? '✓ Completed' : '▶ In Progress'}
+    </span>`;
+  duoGrid.appendChild(el);
+});
+
+/* ── RESOURCES ────────────────────────────────────────────────── */
+const resourceGroups = [
+  {
+    title: '📖 Dictionaries',
+    items: [
+      { icon:'🔍', name:'Jisho',           desc:'The best free Japanese–English dictionary. Stroke order, JLPT level, kanji breakdown.',  url:'https://jisho.org' },
+      { icon:'📱', name:'Takoboto',        desc:'Offline-capable dictionary app. Great for mobile. Includes pitch accent info.',           url:'https://takoboto.jp' },
+      { icon:'漢', name:'Jotoba',          desc:'Fast open-source dictionary with good example sentences and furigana.',                   url:'https://jotoba.de' },
+    ]
+  },
+  {
+    title: '⛩️ SRS & Kanji',
+    items: [
+      { icon:'🏮', name:'WaniKani',        desc:'Your kanji SRS. Radical → Kanji → Vocab. Live data connected via API above.',           url:'https://wanikani.com' },
+      { icon:'📲', name:'Kakehashi',       desc:'The WaniKani companion app you use on mobile.',                                          url:'https://kakehashi.app' },
+      { icon:'🧠', name:'Bunpro',          desc:'Grammar SRS. Great companion to Minna no Nihongo. Covers N5–N1.',                       url:'https://bunpro.jp' },
+      { icon:'🃏', name:'Anki',            desc:'Create your own decks for class vocab and custom cards. Free and open source.',          url:'https://apps.ankiweb.net' },
+    ]
+  },
+  {
+    title: '🎌 Grammar & Study',
+    items: [
+      { icon:'📗', name:"Tae Kim's Guide", desc:'Free, complete grammar guide from scratch. Goes well alongside Minna no Nihongo.',       url:'https://guidetojapanese.org/learn/' },
+      { icon:'🔤', name:'JPDB',            desc:'Vocabulary frequency lists. Great for deciding what to prioritise studying next.',       url:'https://jpdb.io' },
+      { icon:'📺', name:'Cure Dolly',      desc:'Organic Japanese YouTube series. A very different and effective approach to grammar.',   url:'https://www.youtube.com/@organicjapanesewithcuredol9526' },
+    ]
+  },
+  {
+    title: '🎧 Immersion & Input',
+    items: [
+      { icon:'🎬', name:'Animelon',        desc:'Watch anime with Japanese subtitles. Click any word to look it up instantly.',            url:'https://animelon.com' },
+      { icon:'🔊', name:'Immersion Kit',   desc:'Search anime sentences by word. Perfect for finding natural context sentences.',         url:'https://www.immersionkit.com' },
+      { icon:'📰', name:'NHK Web Easy',    desc:'Simplified Japanese news articles. Real content pitched at N4–N3 level.',                url:'https://www3.nhk.or.jp/news/easy/' },
+      { icon:'✍️', name:'Kanji.sh',        desc:'Kanji stroke order practice. Clean, fast, and simple. Great for daily warm-up.',         url:'https://kanji.sh' },
+    ]
+  }
+];
+
+const resourcesContainer = document.getElementById('resources-container');
+resourceGroups.forEach(group => {
+  const h3 = document.createElement('h3');
+  h3.className = 'resources-group-title fade-in';
+  h3.textContent = group.title;
+  resourcesContainer.appendChild(h3);
+
+  const grid = document.createElement('div');
+  grid.className = 'resources-grid fade-in';
+  group.items.forEach(r => {
+    const a = document.createElement('a');
+    a.href = r.url;
+    a.target = '_blank';
+    a.rel = 'noopener noreferrer';
+    a.className = 'resource-card';
+    a.innerHTML = `
+      <div class="resource-icon">${r.icon}</div>
+      <div class="resource-name">${r.name}</div>
+      <p class="resource-desc">${r.desc}</p>
+      <span class="resource-link">Open ↗</span>`;
+    grid.appendChild(a);
+  });
+  resourcesContainer.appendChild(grid);
+});
+lucide.createIcons();
+</script>
+</body>
+</html>
