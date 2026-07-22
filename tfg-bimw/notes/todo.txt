@@ -1,0 +1,17 @@
+the device can directly monitor the binding of the analyte to the recognition layer without requiring fluorescent, radioactive or enzymatic tags.
+
+reagents?
+
+dielectric?
+
+no need for this last part:  The remainder of this document is organised as follows: Section~\ref{sec:state_of_art} summarises the state of the art in photonic biosensing and multiplexed platforms; Section~\ref{sec:methods} presents the methodology and software engineering approach followed; Section~\ref{sec:architecture} details the proposed software architecture and implementation; Section~\ref{sec:results} describes the validation experiments and discusses the results; and Section~\ref{sec:conclusions} outlines the main conclusions and future work.
+
+L' informe final es fa en format article (model en word, document de referència en word i plantilla en LaTeX, i ha de tenir entre 8 i 10 pàgines d'explicació del treball, agraïments i bibliografia. Es poden afegir fins a 4 pàgines addicionals per incloure material d'apèndix
+
+Ha de seguir estrictament el format especificat i ha d'incloure, com a mínim, els continguts esmentats a continuació:
+metodologia, resultats, conclusions , ús de la IA generativa i bibliografia (+ apendix)
+
+Cal ser correcte, precís i sintètic en l'ús del llenguatge.
+
+objectius: captures de les 4 pestanyes del software a l'apendix
+

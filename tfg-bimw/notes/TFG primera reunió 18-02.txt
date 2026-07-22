@@ -1,0 +1,19 @@
+TFG primera reunió 18/02
+
+Estat de l'art deixarlo clar: Ara mateix al mercat no hi ha una solució així, es pot posar una estadística que li doni pes etc etc
+
+Dona igual el format (no cal latex). word, pdf whatever. Llargada és igual, bons apartats
+
+Requisits/objectius: desglossar en requisits funcionals i no funcionals
+
+Fer priorització: Qué és super prioritari d'acabar i què no ho és tant (prioritzar requisits en ordre)
+
+Metodologia/planificació(recomana una àgil) que seguiré (scrum o algun alter). Anàlisi i estimació de quan entregaré què (en 2 setmanes entregaré X). Informe inicial pel 8/3.
+
+Recorda que ets enginyer: Resumeix explicacions, fer servir diagrames/fer-ho més fàcil de digerir. Esquemes, figures, taules.
+
+Uns dies abans del dia 8/3 enviar-li informe inicial a en Joan perquè se'l revisi.
+
+Apartats: Estat del art, metodologia, requisits (importants).
+
+Que quedi clar el que faré i el que no faré.

@@ -1,0 +1,12 @@
+Simplificar explicacions perqu'e sentenguin millor
+
+estat actual del software explicar millor i amb més detall.
+Millor pero cal evidenciar-ho més
+
+fer esquema funcional de les classes, fluxe rutines/funcions, explicar amb més detall amb els principis de l'enginyeria del software. Definir i evidenciar amb més claredat
+
+fer server més figures, esquemes, taules. sintetitxar més i fer més figures, taules, gràfiques. el que s'espera d'un document tècnic.
+
+afegir fotos del Sistema
+
+informe de progrés 2 s'han d'ensenyar alguns resultats

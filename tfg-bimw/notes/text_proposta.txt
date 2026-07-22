@@ -1,0 +1,34 @@
+Estat de l'art: 
+
+Hardware context needed before objectius:
+
+Objectius: L'objectiu d'aquest TFG és de redissenyar un software afegint funcionalitats útils i necessàries, amb bones pràctiques de l'enginyeria del software per tal de tenir un projecte amb una estructura de codi llegible, modular i amb la possibilitat de seguir evolucionant en el futur, alhora que simplifiquem l'ús i arreglem problemes i bugs que s'han anat acumulant amb el pas dels anys en un software amb una versió de python obsoleta mantenint la seva compatibilitat amb el hardware de National Instruments que s'hi fa server en el hardware de l'entorn triat.
+
+Els objectius es poden definir com a:
+
+1. Anàlisi i reestructuració del codi: Analitzar i entendre el software actual per entendre com poder estructurar el nou projecte amb una arquitectura MVC
+
+ 1.1 Repte tècnic: Tota la lògica del codi es troba en un sol fitxer Controller.py de milers de línies de codi on s'inicialitzen totes les variables i es criden tots els mètodes a nivell de backend.
+ 1.2 Solució: S'ha assolit una arquitectura MVC on s'han separate les funcions de la tarjeta d'aquisició de NI degut als seus drivers i crides de funcions de les seves llibreries dedicades. Podeu consultar l'estructura final del codi a l'apendix[1?].
+
+2. Desenvolupament d'un nou projecte: El software actual està fet amb una versió de python 3.9, la qual ja no rep actualitzacions de seguretat segons la pàgina official [2] cosa que implica un projecte obsolet, vulnerable i desactualitzat.
+
+ 2.1 Inicialment volia fer servir python 3.14, però finalment s'ha desenvolupat un nou projecte amb python 3.12 per tal de poder fer servir una versió més recent, estable i amb drivers de NI compatibles amb la tarja d'aquisició. També s'ha tingut en compte poder fer servir una llibrería gràfica més nova, ja que el software actual fa servir PyQt5, que és compatible fins a python 3.10 i amb versions més recents podem fer servir la nova llibreria gràfica PyQt6 per tal de tenir un frontend més responsiu. S'ha fet servir també la llibreria PyInstaller des d'un principi per tal de poder generar un fitxer executable de tot el projecte, ja que ha estat una de les demandes de l'investigador que farà servir el software que li estalviarà temps tenir un executable enlloc d'obrir el projecte amb l'IDE pertinent cada vegada que el vol fer servir.
+
+ 2.2. Dificultat trobada: Al voler importar les llibreries i paquets necessaris amb una comanda de terminal les polítiques de xarxa de l'ICN2 no ho permetien. Buscant alternatives vaig descarregar un a un cada fitxer de cada llibreria i paquet necessari a la pàgina oficial de python i vaig fer servir una comanda per instal·lar-ho tot amb els fitxers descarregats en local, cosa que va afectar una mica al sprint on em trobava.
+
+3. Optimització i arreglar bugs: Moltes parts del codi del software actual tenen solapaments, mètodes molt poc aprofitats i inicialitzacions que redueixen el rendiment de manera innecesària si es fan servir bones pràctiques de software.
+
+S'han arreglat problemes d'acoblament, mètodes que augmentaven l'ús de memòria constantment fins a congelar la recopilació de dades, acumulacions de crides individuals que poden fer-se amb un loop i estalvien línies de codi, errors d'execució i mètodes que reescriuen tot l'apartat gràfic enlloc d'actualitzar-lo, entre altres punts que s'han millorat.
+
+4. Afegir noves funcionalitats principals en forma de pestanyes extra:
+
+En el software actual tenim dues pestanyes: Calibratge i Mesura. Son el core del software i la manera de preparar i recopilar les dades en temps real del fotodíode que tenim en el hardware setup. Tot i així, enmig del desenvolupament l'investigador que dissenya el hardware amb el que estuc treballant em va demanar si podia afegir un software més petit per a fer unes comprovacions inicials abans del calibratge que les tenia amb un codi de pyhton apart. Es tracta d'un software que comprova en temps real quina intensitat (o voltatge) està rebent cadascun dels 7 canals de hardware de la tarjeta de NI. Vaig acceptar i implementar la proposta, millorant substancialment aquest software apart ja que tenia una interfície gràfica molt pobre i un simple botó de Iniciar. Vaig fer una nova pestanya de vista amb el format de PyQt6 i li vaig afegir un botó de stop i un botó de clear format per poder netejar la gràfica en cas de voler comprovar possibles canvis en aquest check inicial abans del calibratge.
+
+L'altre pestanya afegida és de processament. Les dades es generen en format .DAT en temps real i em va semblar pertinent afegir una pestanya on poder afegir un fitxer .DAT amb la informació generada i poder consultar un gràfic de les dades estàtiques amb una funcionalitat de "cutoff frequency" extra que permeti suavitzar les corbes i una opció de guardar les dades després d'obtenir una corba més estètica. He estat treballant en la idea d'implementar aquesta corba per l'adquisició de dades en temps real, però potser no hi arribo.
+
+Al desenvolupar el nou frontend amb PyQt6 s'ha aprofitat per implementar noves funcionalitats útils com un timer a la pestanya de mesura per tenir constància del temps que porta mesurant el programari o una opció desplegable per triar el canal que es vol mostrar durant una mesura en les tres gràfiques de la pestanya pertintent per tal de poder visualitzar més fàcilment el recorregut de cada canal.
+
+5. Documentació a futur:
+
+El software actual no tenia cap documentació adjunta, així que he fet servir el README.md del projecte per donar unes instruccions bàsiques però clares de com preparar un nou setup a un ordinador, quins requisits fan falta, l'estructura del projecte i com poder generar un nou fitxer executable per tal de fer-lo servir com a software sense haver d'obrirlo cada vegada el projecte. Una explicació sobre com instal·lar les llibreries i paquets serà important de cara a nous setups, es deixarà la carpeta amb tots els fitxers requerits dins el projecte per facilitar-ho a futurs investigadors o desenvolupadors de codi.
